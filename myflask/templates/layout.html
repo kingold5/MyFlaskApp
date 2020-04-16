@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MyFlaskApp</title>
+        <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/starter-template.css') }}">
+        <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/blog.css') }}">
+    </head>
+
+    <body>
+        {% include 'includes/_navbar.html' %}
+        <main role="main" class="container">
+            {% include 'includes/_messages.html' %}
+            {% block body %}
+            {% endblock %}
+        </main>
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script>window.jQuery || document.write('<script src="/docs/4.4/assets/js/vendor/jquery.slim.min.js"><\/script>')</script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+        <script type="text/javascript">
+            CKEDITOR.replace('editor')
+        </script>
+    </body>
+</html>

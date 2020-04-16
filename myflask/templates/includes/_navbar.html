@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+  <a class="navbar-brand" href="#">MyFlaskApp</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/about">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/articles">Articles</a>
+      </li>
+    </ul> <!-- Home/About/Articles -->   
+    <ul class="navbar-nav navbar-right">
+        {% if current_user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ session.username }}</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="/dashboard">Dashboard</a>
+              <a class="dropdown-item" href="/settings">Settings</a>
+            </div>
+          </li>
+          <li><a class="btn btn-secondary" href="/logout">Logout</a></li>
+        {% else %}
+          <li><a class="btn text-light" href="/register">Register</a></li>
+          <li><a class="btn btn-secondary" href="/login">Login</a></li>
+        {% endif %}
+    </ul> <!-- User/Register/Login/Logout -->
+  </div>
+</nav>
