@@ -11,8 +11,10 @@ class Users(UserMixin, db.Model):
     name = db.Column(db.VARCHAR(100), nullable=True)
     gender = db.Column(db.Enum('male', 'female', 'other'))
     birthday = db.Column(db.Date)
-    email = db.Column(db.VARCHAR(100), unique=True, nullable=True)
-    username = db.Column(db.VARCHAR(30), unique=True, nullable=True)
+    email = db.Column(db.VARCHAR(100), unique=True, nullable=False)
+    username = db.Column(db.VARCHAR(30), unique=True, nullable=False)
+    status = db.Column(db.String(30), nullable=True)
+    about_me = db.Column(db.String(191), nullable=True)
     password = db.Column(db.VARCHAR(128), nullable=True)
     articles = db.relationship('Articles', backref='author', lazy='dynamic')
     register_date = db.Column(db.TIMESTAMP, nullable=False, default=datetime.datetime.utcnow)
@@ -32,7 +34,7 @@ class Users(UserMixin, db.Model):
 
 class Articles(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.VARCHAR(255), nullable=True)
+    title = db.Column(db.VARCHAR(191), nullable=True)
     uid = db.Column(db.Integer, db.ForeignKey('users.id'))
     body = db.Column(db.Text, nullable=True)
     create_date = db.Column(db.TIMESTAMP, nullable=False, default=datetime.datetime.utcnow)
