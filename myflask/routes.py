@@ -286,6 +286,11 @@ def user_data():
         db.session.commit()
         msg = 'User data sumitted'
         return render_template('settings.html', msg=msg, userDataForm=userDataForm, passwordForm=passwordForm)
+    
+    userDataForm.name.data = current_user.name
+    userDataForm.gender.data = current_user.gender
+    userDataForm.birthday.data = current_user.birthday
+    userDataForm.email.data = current_user.email
 
     error = 'Invalid user data'
     return render_template('settings.html', error=error, userDataForm=userDataForm, passwordForm=passwordForm)
