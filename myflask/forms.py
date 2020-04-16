@@ -1,6 +1,6 @@
 # pylint: disable=missing-docstring,too-few-public-methods,invalid-name,line-too-long,wrong-import-order
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, PasswordField, SelectField, validators
+from wtforms import StringField, TextAreaField, PasswordField, SelectField, validators, SubmitField
 from wtforms.fields.html5 import DateField
 from flask_login import current_user
 from myflask.models import Users
@@ -27,7 +27,6 @@ class UserDataForm(FlaskForm):
             raise validators.ValidationError(
                 'email exists! Please use another one!')
 
-
 # Password class
 class PasswordForm(FlaskForm):
     password = PasswordField('Password', [validators.InputRequired(), validators.EqualTo('confirm', message="Password must match")])
@@ -50,5 +49,17 @@ class RegisterForm(UserDataForm, PasswordForm):
 
 # Article class
 class ArticleForm(FlaskForm):
-    title = StringField('Title', [validators.Length(min=1, max=200)])
+    title = StringField('Title', [validators.Length(min=1, max=191)])
     body = TextAreaField('Body', [validators.Length(min=30)])
+
+
+class ProfileForm(FlaskForm):
+    status = SelectField('Status', choices=[('', ''),
+                                            ('😀', '😀'),
+                                            ('😂', '😂'),
+                                            ('🥰️', '🥰'),
+                                            ('😎', '😎'),
+                                            ('👿', '👿'),
+                                            ('😢', '😢')], default='')
+    about_me = StringField('About_me', [validators.Length(min=0, max=191)])
+    submit = SubmitField('Submit')
