@@ -286,7 +286,7 @@ def user_data():
         db.session.commit()
         msg = 'User data sumitted'
         return render_template('settings.html', msg=msg, userDataForm=userDataForm, passwordForm=passwordForm)
-    
+
     userDataForm.name.data = current_user.name
     userDataForm.gender.data = current_user.gender
     userDataForm.birthday.data = current_user.birthday
@@ -300,5 +300,6 @@ def user_data():
 @login_required
 def user_profile(username):
     user = Users.query.filter_by(username=username).first_or_404()
+    articles = user.articles
 
-    return render_template('user.html', user=user)
+    return render_template('user.html', user=user, articles=articles)
