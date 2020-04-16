@@ -12,4 +12,13 @@
     margin-bottom: 1.25rem;
     color: #999;
   }
+
+  /* Auto-increment in table */
+  table {
+    counter-reset: section;
+  }
   
+  .count:before {
+    counter-increment: section;
+    content: counter(section);
+  } 
