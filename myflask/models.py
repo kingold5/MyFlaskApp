@@ -16,6 +16,7 @@ class Users(UserMixin, db.Model):
     status = db.Column(db.String(30), nullable=True)
     about_me = db.Column(db.String(191), nullable=True)
     password = db.Column(db.VARCHAR(128), nullable=True)
+    last_seen = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     articles = db.relationship('Articles', backref='author', lazy='dynamic')
     register_date = db.Column(db.TIMESTAMP, nullable=False, default=datetime.datetime.utcnow)
 

@@ -1,4 +1,5 @@
 # pylint: disable=missing-docstring,too-few-public-methods,invalid-name,line-too-long,wrong-import-order
+import datetime
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from myflask import app, log, db
@@ -21,6 +22,13 @@ def index():
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+# Last seen
+@app.before_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.datetime.utcnow()
+        db.session.commit()
 
 # Articles
 @app.route('/articles')
@@ -301,7 +309,7 @@ def user_data():
 def user_profile(username):
     user = Users.query.filter_by(username=username).first_or_404()
 
-    return render_template('user.html', user=user)
+    return render_template('user_profile.html', user=user)
 
 # Edit user/self profile
 @app.route('/edit_profile', methods=['POST', 'GET'])
