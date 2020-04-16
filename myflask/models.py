@@ -1,6 +1,7 @@
 # pylint: disable=missing-docstring,too-few-public-methods,invalid-name,line-too-long,wrong-import-order
 import datetime
 from passlib.hash import sha256_crypt
+from hashlib import md5
 from flask_login import UserMixin
 from myflask import db, login
 
@@ -24,6 +25,10 @@ class Users(UserMixin, db.Model):
 
     def check_password(self, password_candidate):
         return sha256_crypt.verify(password_candidate, self.password)
+
+    def avatar(self, size=80):
+        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
 
 class Articles(db.Model):
     id = db.Column(db.Integer, primary_key=True)
