@@ -2,6 +2,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, PasswordField, SelectField, validators
 from wtforms.fields.html5 import DateField
+from flask_login import current_user
 from myflask.models import Users
 
 
@@ -13,11 +14,16 @@ class UserDataForm(FlaskForm):
     username = StringField('Username', [validators.Length(min=2, max=25)], render_kw={'readonly':True})
     email = StringField('E-mail', [validators.Email()])
 
-    def validate_email(self, email):
-        user = Users.query.filter_by(email=email).all()
+    def validate_email(self, field):
+        user = Users.query.filter_by(email=field.data).first()
 
-        # Same email found
-        if user is not None:
+        # Found same email address
+        if current_user.is_anonymous:
+            # In register view
+            if user is not None:
+                raise validators.ValidationError(
+                    'email exists! Please use another one!')
+        elif user.id != current_user.id:
             raise validators.ValidationError(
                 'email exists! Please use another one!')
 
@@ -33,9 +39,10 @@ class PasswordForm(FlaskForm):
 class RegisterForm(UserDataForm, PasswordForm):
     username = StringField('Username', [validators.Length(min=2, max=25)])
 
-    def validate_username(self, username):
-        user = Users.query.filter_by(username=username)
-        # Same username found
+    def validate_username(self, field):
+        user = Users.query.filter_by(username=field.data).first()
+
+        # Found same username
         if user is not None:
             raise validators.ValidationError(
                 'username exists! Please use another one!')
