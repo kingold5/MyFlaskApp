@@ -294,3 +294,11 @@ def user_data():
 
     error = 'Invalid user data'
     return render_template('settings.html', error=error, userDataForm=userDataForm, passwordForm=passwordForm)
+
+# User
+@app.route('/user/<string:username>')
+@login_required
+def user_profile(username):
+    user = Users.query.filter_by(username=username).first_or_404()
+
+    return render_template('user.html', user=user)
