@@ -17,7 +17,10 @@
       </li>
     </ul> <!-- Home/About/Articles -->   
     <ul class="navbar-nav navbar-right">
-        {% if current_user.is_authenticated %}
+        {% if current_user.is_anonymous %}
+          <li><a class="btn text-light" href="/register">Register</a></li>
+          <li><a class="btn btn-secondary" href="/login">Login</a></li>
+        {% else %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ current_user.username }}</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
@@ -27,9 +30,6 @@
             </div>
           </li>
           <li><a class="btn btn-secondary" href="/logout">Logout</a></li>
-        {% else %}
-          <li><a class="btn text-light" href="/register">Register</a></li>
-          <li><a class="btn btn-secondary" href="/login">Login</a></li>
         {% endif %}
     </ul> <!-- User/Register/Login/Logout -->
   </div>
