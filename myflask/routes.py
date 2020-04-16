@@ -2,7 +2,7 @@
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from myflask import app, log, db
-from myflask.forms import UserDataForm, PasswordForm, RegisterForm, ArticleForm
+from myflask.forms import UserDataForm, PasswordForm, RegisterForm, ArticleForm, ProfileForm
 from myflask.models import Users, Articles
 
 
@@ -295,11 +295,28 @@ def user_data():
     error = 'Invalid user data'
     return render_template('settings.html', error=error, userDataForm=userDataForm, passwordForm=passwordForm)
 
-# User
+# User profile display
 @app.route('/user/<string:username>')
 @login_required
 def user_profile(username):
     user = Users.query.filter_by(username=username).first_or_404()
-    articles = user.articles
 
-    return render_template('user.html', user=user, articles=articles)
+    return render_template('user.html', user=user)
+
+# Edit user/self profile
+@app.route('/edit_profile', methods=['POST', 'GET'])
+@login_required
+def edit_profile():
+    form = ProfileForm(request.form)
+
+    if form.validate_on_submit():
+        current_user.status = form.status.data
+        current_user.about_me = form.about_me.data
+
+        db.session.commit()
+        flash('Your profile is updated!', 'success')
+        return redirect(url_for('user_profile', username=current_user.username))
+
+    form.status.data = current_user.status
+    form.about_me.data = current_user.about_me
+    return render_template('edit_profile.html', form=form)
