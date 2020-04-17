@@ -6,7 +6,7 @@
             {% for article in articles %}
                 <div class="blog-post">
                     <h2 class="blog-post-title">{{ article.title }}</h2>
-                    <p class="blog-post-meta">{{ article.create_date }} by <a href="#">{{ article.author.username }}</a></p>
+                    <p class="blog-post-meta">{{ article.create_date }} by <a href="/user/{{ article.author.username }}">{{ article.author.username }}</a></p>
                     <p>{{ (article.body|safe)[:200] }} ...</p>
                     <a href="/article/{{ article.id }}">read more</a>
                 </div><!-- /.blog-post -->
