@@ -22,4 +22,4 @@ login.login_view = 'login'
 # Create log handle
 log = logging.create_logger(app)
 
-from myflask import forms, routes
+from myflask import forms, routes, error
