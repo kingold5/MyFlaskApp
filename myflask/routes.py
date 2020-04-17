@@ -71,31 +71,6 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
-"""
-# Wraps login required
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'logged_in' in session:
-            return f(*args, **kwargs)
-        else:
-            flash('Unauthorized, Please login!', 'danger')
-            return redirect(url_for('login', next=request.url))
-    return decorated_function
-
-# Wraps private page
-# Pages only the created user can visit
-def private_page(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'logged_in' in session and kwargs['username'] == session['username']:
-            return f(*args, **kwargs)
-        else:
-            flash('You are not allowed to visit that page!', 'danger')
-            return redirect(url_for('index'))
-    return decorated_function
-"""
-
 # User login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -128,7 +103,7 @@ def login():
 @login_required
 def dashboard():
     # Fetch all articles from login user
-    articles = Users.query.filter_by(username=current_user.username).first().articles
+    articles = current_user.articles
 
     if articles is not None:
         return render_template('dashboard.html', articles=articles)
