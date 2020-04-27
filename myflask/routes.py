@@ -97,13 +97,9 @@ def login():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    # Fetch all articles from login user
-    articles = current_user.articles
 
-    if articles is not None:
-        return render_template('dashboard.html', articles=articles)
-    else:
-        return render_template('dashboard.html')
+    return render_template('dashboard.html',
+                           articles=current_user.followed_articles())
 
 # User logout
 @app.route('/logout')

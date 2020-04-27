@@ -21,7 +21,7 @@ class Users(UserMixin, db.Model):
     email = db.Column(db.VARCHAR(100), unique=True, nullable=False)
     username = db.Column(db.VARCHAR(30), unique=True, nullable=False)
     status = db.Column(db.String(30), nullable=True)
-    about_me = db.Column(db.String(191), nullable=True)
+    about_me = db.Column(db.String(140), nullable=True)
     password = db.Column(db.VARCHAR(128), nullable=True)
     last_seen = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     # Set followers
@@ -43,7 +43,7 @@ class Users(UserMixin, db.Model):
 
     def avatar(self, size=80):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
-        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
+        return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
 
     def follow(self, user):
         """If not following, follow the user
@@ -80,6 +80,13 @@ class Users(UserMixin, db.Model):
         """
         return self.followed.filter(
             followers.c.followed_id == user.id).count() > 0
+
+    def followed_articles(self):
+        followed = Articles.query.join(
+            followers, (followers.c.followed_id == Articles.uid)).filter(
+                followers.c.follower_id == self.id)
+        own = Articles.query.filter_by(uid=self.id)
+        return followed.union(own).order_by(Articles.create_date.desc())
 
 
 class Articles(db.Model):
