@@ -7,11 +7,6 @@ from myflask.forms import UserDataForm, PasswordForm, RegisterForm, ArticleForm,
 from myflask.models import Users, Articles
 
 
-#TODO
-# user profile
-# add article with sqlalchemy
-# flask-login
-
 # Home
 @app.route('/')
 @app.route('/index')
@@ -303,3 +298,25 @@ def edit_profile():
     form.status.data = current_user.status
     form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', form=form)
+
+# Follow users
+@app.route('/follow/<string:username>', methods=['POST'])
+@login_required
+def follow(username):
+    user = Users.query.filter_by(username=username).first_or_404()
+    current_user.follow(user)
+    db.session.commit()
+
+    flash(f'You are following {username}!', 'success')
+    return redirect(url_for('user_profile', username=username))
+
+# Unfollow users
+@app.route('/unfollow/<string:username>', methods=['POST'])
+@login_required
+def unfollow(username):
+    user = Users.query.filter_by(username=username).first_or_404()
+    current_user.unfollow(user)
+    db.session.commit()
+
+    flash(f'You have unfollowed {username}!', 'success')
+    return redirect(url_for('user_profile', username=username))

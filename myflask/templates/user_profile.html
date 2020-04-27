@@ -6,6 +6,17 @@
             <td><img src="{{ user.avatar(160) }}"></td>
             <td>
               <h1>User: {{ user.username }}</h1>
+              {% if current_user.is_following(user) %}
+                <form action=" {{ url_for('unfollow', username=user.username) }}" method="POST">
+                    <input type="hidden" name="_method" value="UNFOLLOW">
+                    <input type="submit" value="Unfollow" class="btn btn-secondary float-right">
+                </form>
+              {% else %}
+                <form action=" {{ url_for('follow', username=user.username) }}" method="POST">
+                    <input type="hidden" name="_method" value="FOLLOW">
+                    <input type="submit" value="Follow" class="btn btn-danger float-right">
+                </form>
+              {% endif %}
               {% if user.status is not none %} <p>Status: {{ user.status }}</p> {% endif %}
               {% if user.about_me is not none %} <p>About me: {{ user.about_me }}</p> {% endif %}
               {% if user.last_seen is not none %} <p>Last seen: {{ user.last_seen }}</p> {% endif %}
